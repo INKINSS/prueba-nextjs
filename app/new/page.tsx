@@ -1,32 +1,26 @@
 "use client";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 const NewPage = () => {
   const router = useRouter();
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     const title = e.target.title.value;
     const description = e.target.description.value;
-    console.log({ title, description });
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/tasks", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ title, description }),
-        });
-        const data = await response.json();
-        console.log(data);
-        router.push("/");
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
+    try {
+      await fetch("/api/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, description }),
+      });
+      router.push("/");
+    } catch (error) {
+      console.error("Error creating task:", error);
+    }
   };
 
   return (
