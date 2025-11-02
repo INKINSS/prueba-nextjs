@@ -2,21 +2,21 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/src/libs/prisma"
 
 interface Params {
-    id: number
+    id: string
 }
 
-export const GET = async (request: Request, { params }: { params: Params }) => {
-    const { id } = await params
-    const oneTask = await prisma.task.findUnique({
+export const GET = async (request: Request,{ params }: { params: Params }) => {
+    const { id } = await params;
+    const taskData = await prisma.task.findUnique({
         where: {
             id: Number(id)
         }
     })
-    return NextResponse.json({ oneTask })
+    return NextResponse.json(taskData)
 }
 
 export const PUT = async (request: Request, { params }: { params: Params }) => {
-    const { id } = await params;
+    const { id } = params;
     const { title, description } = await request.json();
     const updatedTask = await prisma.task.update({
         where: {
